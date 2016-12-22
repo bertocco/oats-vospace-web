@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**_____________________________________________________________________________
+ *
+ *                                 OATS - INAF
+ *  Osservatorio Astronomico di Tireste - Istituto Nazionale di Astrofisica
+ *  Astronomical Observatory of Trieste - National Institute for Astrophysics
+ * ____________________________________________________________________________
+ *
+ * Copyright (C) 20016  Istituto Nazionale di Astrofisica
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software Foundation, Inc., 
+ * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * _____________________________________________________________________________
+ **/
+-->
+
+<!DOCTYPE web-app
+    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+    "http://java.sun.com/j2ee/dtds/web-app_2_3.dtd">
+
+<web-app>
+
+  <display-name>YOUR APPLICATION DISPLAY NAME</display-name>
+
+    <context-param>
+        <param-name>ivoa.vos.uri</param-name>
+        <param-value>vos://oats.inaf.it!vospace</param-value>
+    </context-param>
+    <context-param>
+        <param-name>VOSpaceStylesheetReference</param-name>
+<!--
+        <param-value>VOSpace-2.0.xsd</param-value>
+-->
+        <param-value>vospace.xsl</param-value>
+    </context-param>
+    <!--
+    <listener>
+        <listener-class>
+            it.inaf.oats.OATSContextListener
+        </listener-class>
+    </listener>
+    -->
+ <!-- async transfer servlet-->
+  <servlet>
+    <servlet-name>TransferServlet</servlet-name>
+    <servlet-class>it.inaf.oats.oatsrestlet.INAFRestletServlet</servlet-class>
+
+    <init-param>
+      <param-name>org.restlet.application</param-name>
+      <param-value>ca.nrc.cadc.uws.web.restlet.UWSAsyncApplication</param-value>
+    </init-param>
+    <init-param>
+      <param-name>ca.nrc.cadc.uws.server.JobManager</param-name>
+      <param-value>it.inaf.oats.vospacebackend.implementation.TransferJobManager</param-value>
+    </init-param>
+    <init-param>
+      <param-name>ca.nrc.cadc.uws.web.InlineContentHandler</param-name>
+      <param-value>ca.nrc.cadc.vos.server.TransferInlineContentHandler</param-value>
+    </init-param><!-- List of supported client protocols (Optional - Only in mode 3) -->
+    <!-- Add the Servlet context path to routes (Optional) -->
+    <init-param>
+        <param-name>org.restlet.autoWire</param-name>
+        <param-value>true</param-value>
+    </init-param>
+    <load-on-startup>3</load-on-startup>
+  </servlet>
+
+  <!-- async transfer servlet with http basic auth, restlet requires a 2nd deployment-->
+  <servlet>
+    <servlet-name>AuthTransferServlet</servlet-name>
+    <servlet-class>it.inaf.oats.oatsrestlet.INAFRestletServlet</servlet-class>
+
+    <init-param>
+      <param-name>org.restlet.application</param-name>
+      <param-value>ca.nrc.cadc.uws.web.restlet.UWSAsyncApplication</param-value>
+    </init-param>
+    <init-param>
+      <param-name>ca.nrc.cadc.uws.server.JobManager</param-name>
+      <param-value>it.inaf.oats.vospacebackend.implementation.TransferJobManager</param-value>
+    </init-param>
+    <init-param>
+      <param-name>ca.nrc.cadc.uws.web.InlineContentHandler</param-name>
+      <param-value>ca.nrc.cadc.vos.server.TransferInlineContentHandler</param-value>
+    </init-param>
+    
+    <!-- Add the Servlet context path to routes (Optional) -->
+    <init-param>
+        <param-name>org.restlet.autoWire</param-name>
+        <param-value>true</param-value>
+    </init-param>
+    <load-on-startup>3</load-on-startup>
+  </servlet>
+
+  <!-- sync transfer servlet-->
+  <servlet>
+    <servlet-name>SyncTransferServlet</servlet-name>
+    <servlet-class>ca.nrc.cadc.uws.server.SyncServlet</servlet-class>
+    <init-param>
+      <param-name>ca.nrc.cadc.uws.server.JobManager</param-name>
+      <param-value>it.inaf.oats.vospacebackend.implementation.TransferJobManager</param-value>
+    </init-param>
+    <init-param>
+      <param-name>ca.nrc.cadc.uws.server.SyncServlet.execOnGET</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>ca.nrc.cadc.uws.server.SyncServlet.execOnPOST</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>ca.nrc.cadc.uws.web.InlineContentHandler</param-name>
+      <param-value>ca.nrc.cadc.vos.server.TransferInlineContentHandler</param-value>
+
+    </init-param>
+  </servlet>
+
+  <!-- async recursive node property setting servlet-->
+<!-- SB: feture not open sourced
+  <servlet>
+    <servlet-name>RecursiveSetNodeServlet</servlet-name>
+    <servlet-class>it.inaf.oats.oatsrestlet.INAFRestletServlet</servlet-class>
+
+    <init-param>
+      <param-name>org.restlet.application</param-name>
+      <param-value>ca.nrc.cadc.uws.web.restlet.UWSAsyncApplication</param-value>
+    </init-param>
+    <init-param>
+      <param-name>ca.nrc.cadc.uws.server.JobManager</param-name>
+      <param-value>ca.nrc.cadc.vospace.RecursiveSetNodeJobManager</param-value>
+    </init-param>
+    <init-param>
+      <param-name>ca.nrc.cadc.uws.web.InlineContentHandler</param-name>
+      <param-value>ca.nrc.cadc.vos.server.NodeInlineContentHandler</param-value>
+    </init-param>
+    <load-on-startup>3</load-on-startup>
+  </servlet>
+-->
+
+  <!-- async recursive node property setting servlet with http basic auth, restlet requires a 2nd deployment-->
+<!-- SB: feture not open sourced
+  <servlet>
+    <servlet-name>AuthRecursiveSetNodeServlet</servlet-name>
+    <servlet-class>it.inaf.oats.oatsrestlet.INAFRestletServlet</servlet-class>
+
+    <init-param>
+      <param-name>org.restlet.application</param-name>
+      <param-value>ca.nrc.cadc.uws.web.restlet.UWSAsyncApplication</param-value>
+    </init-param>
+    <init-param>
+      <param-name>ca.nrc.cadc.uws.server.JobManager</param-name>
+      <param-value>ca.nrc.cadc.vospace.RecursiveSetNodeJobManager</param-value>
+    </init-param>
+    <init-param>
+      <param-name>ca.nrc.cadc.uws.web.InlineContentHandler</param-name>
+      <param-value>ca.nrc.cadc.vos.server.NodeInlineContentHandler</param-value>
+    </init-param>
+    <load-on-startup>3</load-on-startup>
+  </servlet>
+-->
+
+  <!-- remote job phase update servlet-->
+  <servlet>
+    <servlet-name>JobUpdaterServlet</servlet-name>
+    <servlet-class>ca.nrc.cadc.uws.server.JobUpdaterServlet</servlet-class>
+    <init-param>
+      <param-name>ca.nrc.cadc.uws.server.JobUpdater</param-name>
+      <param-value>it.inaf.oata.vospacebackend.implementation.DatabaseJobPersistenceImpl</param-value>
+    </init-param>
+  </servlet>
+
+  <!-- internal servlet to assist async transfer servlet -->
+<!--
+  <servlet>
+    <servlet-name>ClientTransferServlet</servlet-name>
+    <servlet-class>ca.nrc.cadc.vospace.ClientTransferServlet</servlet-class>
+    <init-param>
+      <param-name>ca.nrc.cadc.uws.server.JobManager</param-name>
+      <param-value>it.inaf.oats.vospacebackend.implementation.TransferJobManager</param-value>
+    </init-param>
+    <load-on-startup>2</load-on-startup>
+  </servlet>
+-->
+ <servlet>
+    <servlet-name>TransferDetailsServlet</servlet-name>
+    <servlet-class>ca.nrc.cadc.vos.server.transfers.TransferDetailsServlet</servlet-class>
+    <init-param>
+      <param-name>ca.nrc.cadc.uws.server.JobManager</param-name>
+      <param-value>it.inaf.oats.vospacebackend.implementation.TransferJobManager</param-value>
+    </init-param>
+    <load-on-startup>2</load-on-startup>
+  </servlet>
+
+  <!-- VOSpace NodesServlet -->
+    <servlet>
+        <servlet-name>NodesServlet</servlet-name>
+        <servlet-class>it.inaf.oats.oatsrestlet.INAFRestletServlet</servlet-class>
+        <init-param>
+            <param-name>org.restlet.application</param-name>
+            <param-value>ca.nrc.cadc.vos.server.web.restlet.NodesApplication</param-value>
+        </init-param>
+        <init-param>
+            <param-name>ca.nrc.cadc.vos.NodePersistence</param-name>
+            <param-value>it.inaf.oats.vospacebackend.implementation.DatabaseNodePersistenceImpl</param-value>
+        </init-param>
+    <!-- Add the Servlet context path to routes (Optional) -->
+    <init-param>
+        <param-name>org.restlet.autoWire</param-name>
+        <param-value>true</param-value>
+    </init-param>
+
+        <load-on-startup>4</load-on-startup>
+    </servlet>
+  <!-- VOSpace NodesServlet with http basic auth, restlet requires a 2nd deployment-->
+  <servlet>
+    <servlet-name>AuthNodesServlet</servlet-name>
+    <servlet-class>it.inaf.oats.oatsrestlet.INAFRestletServlet</servlet-class>
+
+    <init-param>
+      <param-name>org.restlet.application</param-name>
+      <param-value>ca.nrc.cadc.vos.server.web.restlet.NodesApplication</param-value>
+    </init-param>
+    <init-param>
+      <param-name>ca.nrc.cadc.vos.NodePersistence</param-name>
+      <param-value>it.inaf.oats.vospacebackend.implementation.DatabaseNodePersistenceImpl</param-value>
+    </init-param>
+    <!-- Add the Servlet context path to routes (Optional) -->
+    <init-param>
+        <param-name>org.restlet.autoWire</param-name>
+        <param-value>true</param-value>
+    </init-param>
+
+    <load-on-startup>4</load-on-startup>
+  </servlet>
+
+  <!-- VOSpace ViewsServlet -->
+  <servlet>
+    <servlet-name>ViewsServlet</servlet-name>
+    <servlet-class>it.inaf.oats.oatsrestlet.INAFRestletServlet</servlet-class>
+
+    <init-param>
+      <param-name>org.restlet.application</param-name>
+      <param-value>ca.nrc.cadc.vos.server.web.restlet.ViewsApplication</param-value>
+    </init-param>
+    <!-- Add the Servlet context path to routes (Optional) -->
+    <init-param>
+        <param-name>org.restlet.autoWire</param-name>
+        <param-value>true</param-value>
+    </init-param>
+
+    <load-on-startup>4</load-on-startup>
+  </servlet>
+
+<!-- I availability -->
+  <servlet>
+    <servlet-name>AvailabilityServlet</servlet-name>
+    <servlet-class>ca.nrc.cadc.vosi.AvailabilityServlet</servlet-class>
+    <init-param>
+      <param-name>ca.nrc.cadc.vosi.WebService</param-name>
+      <param-value>ca.nrc.cadc.vospace.ServiceAvailability</param-value>
+    </init-param>
+    <load-on-startup>5</load-on-startup>
+  </servlet>
+
+  <!-- VOSI capabilities -->
+<!--
+  <servlet>
+    <servlet-name>CapabilitiesServlet</servlet-name>
+    <servlet-class>ca.nrc.cadc.vosi.CapabilitiesServlet</servlet-class>
+-->
+    <!-- param-name is formed by <protocol>:<resource> -->
+    <!-- param-value is made up of <capability URI> [role=std] [auth=<X.509|HTTP] -->
+<!--
+    <init-param>
+      <param-name>/nodes</param-name>
+      <param-value>ivo://ivoa.net/std/VOSpace#nodes role=std</param-value>
+      <description />
+    </init-param>
+    <init-param>
+      <param-name>/capabilities</param-name>
+      <param-value>ivo://ivoa.net/std/VOSI#capabilities</param-value>
+      <description />
+    </init-param>
+    <init-param>
+      <param-name>/availability</param-name>
+      <param-value>ivo://ivoa.net/std/VOSI#availability</param-value>
+      <description />
+    </init-param>
+  </servlet>
+-->
+   <servlet>
+    <servlet-name>CapabilitiesServlet</servlet-name>
+        <servlet-class>ca.nrc.cadc.vosi.CapabilitiesServlet</servlet-class>
+            <init-param>
+                <param-name>input</param-name>
+                <param-value>/capabilities.xml</param-value>
+            </init-param>
+   </servlet>
+    <servlet>
+        <servlet-name>logControl</servlet-name>
+        <servlet-class>ca.nrc.cadc.log.LogControlServlet</servlet-class>
+        <init-param>
+            <param-name>logLevel</param-name>
+            <param-value>debug</param-value>
+        </init-param>
+        <init-param>
+            <param-name>logLevelPackages</param-name>
+            <param-value>
+            ca.nrc.cadc.log
+            ca.nrc.cadc.uws
+            ca.nrc.cadc.vos
+            ca.nrc.cadc.vos.server
+            ca.nrc.cadc.vospace
+            ca.nrc.cadc.transfer
+            ca.nrc.cadc.cred
+            ca.nrc.cadc.ac
+            ca.nrc.cadc.vosi
+            </param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+  <!-- the VOSpace Endpoints -->
+    <servlet-mapping>
+        <servlet-name>NodesServlet</servlet-name>
+        <url-pattern>/nodes/*</url-pattern>
+    </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>AuthNodesServlet</servlet-name>
+    <url-pattern>/auth/nodes/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ViewsServlet</servlet-name>
+    <url-pattern>/views</url-pattern>
+  </servlet-mapping>
+
+  <!-- Transfer servlet endpoints -->
+  <servlet-mapping>
+    <servlet-name>TransferServlet</servlet-name>
+    <url-pattern>/transfers/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>AuthTransferServlet</servlet-name>
+    <url-pattern>/auth/transfers/*</url-pattern>
+  </servlet-mapping>
+
+  <!-- Resursive Set Node servlet endpoints -->
+<!-- SB: feture not open sourced  
+  <servlet-mapping>
+    <servlet-name>RecursiveSetNodeServlet</servlet-name>
+    <url-pattern>/nodeprops/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>AuthRecursiveSetNodeServlet</servlet-name>
+    <url-pattern>/auth/nodeprops/*</url-pattern>
+  </servlet-mapping>
+-->
+  <!-- Client transfer servlet endpoints -->
+<!--
+  <servlet-mapping>
+    <servlet-name>ClientTransferServlet</servlet-name>
+    <url-pattern>/xfer/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ClientTransferServlet</servlet-name>
+    <url-pattern>/auth/xfer/*</url-pattern>
+  </servlet-mapping>
+-->
+ <servlet-mapping>
+    <servlet-name>TransferDetailsServlet</servlet-name>
+    <url-pattern>/xfer/*</url-pattern>
+  </servlet-mapping>
+ <servlet-mapping>
+    <servlet-name>TransferDetailsServlet</servlet-name>
+    <url-pattern>/auth/xfer/*</url-pattern>
+  </servlet-mapping>
+
+  <!-- remote job updates: path can be obscure but has to be known to data_ws -->
+  <servlet-mapping>
+    <servlet-name>JobUpdaterServlet</servlet-name>
+    <url-pattern>/jobUpdater/*</url-pattern>
+  </servlet-mapping>
+
+  <!-- Availability servlet endpoint -->
+  <servlet-mapping>
+    <servlet-name>AvailabilityServlet</servlet-name>
+    <url-pattern>/availability</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>AvailabilityServlet</servlet-name>
+    <url-pattern>/auth/availability</url-pattern>
+  </servlet-mapping>
+
+  <!-- Capability servlet endpoint -->
+  <servlet-mapping>
+    <servlet-name>CapabilitiesServlet</servlet-name>
+    <url-pattern>/capabilities</url-pattern>
+  </servlet-mapping>
+
+  <!-- Log control servlet endpoint -->
+  <servlet-mapping>
+    <servlet-name>logControl</servlet-name>
+    <url-pattern>/logControl</url-pattern>
+  </servlet-mapping>
+
+ <servlet-mapping>
+    <servlet-name>SyncTransferServlet</servlet-name>
+    <url-pattern>/synctrans/*</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>SyncTransferServlet</servlet-name>
+    <url-pattern>/auth/synctrans/*</url-pattern>
+  </servlet-mapping>
+
+    <resource-ref>
+         <res-ref-name>jdbc/cadctest</res-ref-name>
+         <res-type>javax.sql.DataSource</res-type>
+         <res-auth>Container</res-auth>
+         <res-sharing-scope>Shareable</res-sharing-scope>
+    </resource-ref>
+    
+    <!-- Define a security constraint for auth servlet -->
+<security-constraint>
+    <web-resource-collection>
+        <web-resource-name>auth</web-resource-name>
+        <description/>
+        <url-pattern>/auth/*</url-pattern>
+        <!--
+              <url-pattern>/logControl/*</url-pattern>
+        -->
+        <http-method>GET</http-method>
+        <http-method>POST</http-method>
+        <http-method>HEAD</http-method>
+        <http-method>PUT</http-method>
+        <http-method>OPTIONS</http-method>
+        <http-method>TRACE</http-method>
+        <http-method>DELETE</http-method>
+    </web-resource-collection>
+    <auth-constraint>
+        <description>force authentication for all requests</description>
+        <role-name>public</role-name>
+    </auth-constraint>
+</security-constraint>
+
+<!--
+  BASIC Http Authentication for logControl
+-->
+<login-config>
+    <auth-method>BASIC</auth-method>
+    <realm-name>YOUR DOMAIN NAME</realm-name>
+</login-config>
+
+</web-app>

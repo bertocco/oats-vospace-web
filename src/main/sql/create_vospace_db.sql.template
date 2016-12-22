@@ -1,0 +1,164 @@
+/**_____________________________________________________________________________
+ *
+ *                                 OATS - INAF
+ *  Osservatorio Astronomico di Tireste - Istituto Nazionale di Astrofisica
+ *  Astronomical Observatory of Trieste - National Institute for Astrophysics
+ * ____________________________________________________________________________
+ *
+ * Copyright (C) 20016  Istituto Nazionale di Astrofisica
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software Foundation, Inc., 
+ * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * _____________________________________________________________________________
+ **/
+
+/*
+This file contains :
+the VOSpace front-end tables to manage stored files metadata
+the UWS tables to manage Job metadata
+*/
+
+/*
+    DataBase creation and grant assignment
+*/
+
+CREATE DATABASE YOUR_DB_NAME;
+
+use YOUR_DB_NAME;
+
+grant all on YOUR_DB_NAME.* to 'YOUR_DB_USER' identified by 'YOUR_DB_PASSWORD';
+
+
+/*
+    VOSpace front-end
+*/
+
+CREATE TABLE Node 
+(
+  nodeID           BIGINT(20) NOT NULL AUTO_INCREMENT,
+  parentID         BIGINT(20)    default NULL,
+  name             VARCHAR(256)  NOT NULL,
+  type             CHAR(1)       NOT NULL,
+  busyState        CHAR(1)       NOT NULL,
+  ownerID          INT(40)       NOT NULL,
+  creatorID        INT(40)       NOT NULL,
+  groupRead        VARCHAR(256)  default NULL,
+  groupWrite       VARCHAR(256)  default NULL,
+  isPublic         BIT(1)        NOT NULL,
+  isLocked         BIT(1)        NOT NULL,
+  delta            BIGINT(20)    default NULL,
+  contentType      VARCHAR(100)  default NULL,
+  contentEncoding  VARCHAR(50)   default NULL,
+  contentLength    BIGINT(20)    default NULL,
+  contentMD5       BINARY(16)    default NULL,
+  createdOn        DATETIME      default CURRENT_TIMESTAMP,
+  lastModified     DATETIME      NOT NULL,
+  link             TEXT          default NULL,
+
+  PRIMARY KEY (nodeID)
+
+) ENGINE=InnoDB;
+
+CREATE TABLE NodeProperty 
+(
+    nodeID            BIGINT(20),
+    propertyURI       VARCHAR(256)      NOT NULL,
+    propertyValue     VARCHAR(512)      default NULL,
+    lastModified      DATETIME          default CURRENT_TIMESTAMP,
+-- support replication with a fake primary key
+     _rep_support      bigint(20) NOT NULL PRIMARY KEY,
+
+    foreign key (nodeID) references Node (nodeID) 
+
+) ENGINE=InnoDB;
+
+CREATE TABLE DeletedNode
+(     
+     nodeID        bigint(20)    NOT NULL,
+     name          varchar(276)  NOT NULL,
+     ownerID       varchar(256)  NOT NULL,
+     lastModified  DATETIME      default CURRENT_TIMESTAMP,
+
+     PRIMARY KEY (nodeID)
+
+ ) ENGINE=InnoDB;
+
+/*
+    UWS
+*/
+create table Job (
+     jobID                   varchar(16)     NOT NULL,
+     runID                   varchar(128),
+
+-- suitable column when using the X500IdentityManager
+     ownerID                 varchar(128),
+
+     executionPhase          varchar(16)     not null,
+     executionDuration       bigint (20)     not null,
+     creationTime            DATETIME       not null,
+     destructionTime         DATETIME,
+      quote                   DATETIME,
+     startTime               DATETIME,
+     endTime                 DATETIME,
+     error_summaryMessage    varchar(1024),
+     error_type              varchar(16),
+     error_documentURL       varchar(128),
+      requestPath             varchar(128),
+     remoteIP                varchar(20),
+     jobInfo_content         varchar(1000),
+     jobInfo_contentType     varchar(128),
+     jobInfo_valid           smallint(6),
+     deletedByUser           smallint(6)     default 0,
+     lastModified            DATETIME       not null,
+     primary key (jobID)
+ ) ENGINE=InnoDB;
+
+
+create table JobDetail
+ (
+     jobID                   varchar(16)     not null,
+     type                    char(1)         not null,
+     name                    varchar(128)    not null,
+     value                   varchar(128),
+
+     foreign key (jobID) references Job (jobID)
+
+ ) ENGINE=InnoDB;
+
+create index uws_param_i1 on JobDetail(jobID);
+
+/*
+   Initialize root node for vospace
+*/
+
+insert into Node (name, parentID, type, busyState, ownerID, creatorID, groupRead, groupWrite, isPublic, isLocked,lastModified) 
+values ('YOUR_ROOT_NODE', NULL, 'C', 'N', 'YOUR_USER_NUMERIC_ID', 'YOUR_USER_NUMERIC_ID', 'YOUR_ADMIN_GROUP', 'YOUR_ADMIN_GROUP', 1, 0, 'CURRENT_DATE');
+
+/*
+DB versions support:
+Since MariaDB 10.0.1, DATETIME columns also accept CURRENT_TIMESTAMP as the default value.
+Since MySQL 5.6.X CURRENT_TIMESTAMP is supported.
+For older versions it can be set as example:
+lastModified      DATETIME          default NULL
+and then a trigger can be used to set a current timestamp as default. Example:
+
+DELIMITER ;;
+CREATE TRIGGER `my_trigger` BEFORE INSERT ON `my_table` FOR EACH ROW
+BEGIN
+    SET NEW.date_to_be_set = NOW();
+END;;
+DELIMITER ;
+*/
+
+

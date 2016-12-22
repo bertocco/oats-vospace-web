@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vosi:capabilities
+    xmlns:vosi="http://www.ivoa.net/xml/VOSICapabilities/v1.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:vod="http://www.ivoa.net/xml/VODataService/v1.1">
+
+  <capability standardID="ivo://ivoa.net/std/VOSI#capabilities">
+    <interface xsi:type="vod:ParamHTTP" role="std">
+      <accessURL use="full">http://replace.me.com/vospace/capabilities</accessURL>
+    </interface>
+  </capability>
+
+  <capability standardID="ivo://ivoa.net/std/VOSI#availability">
+    <interface xsi:type="vod:ParamHTTP" role="std">
+      <accessURL use="full">http://replace.me.com/vospace/availability</accessURL>
+    </interface>
+  </capability>
+  
+  <capability standardID="vos://cadc.nrc.ca~vospace/CADC/std/LOGGING#logControl-1.0">
+    <interface xsi:type="vod:ParamHTTP" role="std" version="1.0">
+      <accessURL use="full">http://replace.me.com/vospace/logControl</accessURL>
+    </interface>
+  </capability>
+
+  <capability standardID="ivo://ivoa.net/std/VOSpace/v2.0#views">
+    <interface xsi:type="vod:ParamHTTP" role="std">
+      <accessURL use="full">http://replace.me.com/vospace/views</accessURL>
+    </interface>
+  </capability>
+
+  <capability standardID="ivo://ivoa.net/std/VOSpace/v2.0#nodes">
+    <interface xsi:type="vod:ParamHTTP" role="std">
+      <accessURL use="base">http://replace.me.com/vospace/nodes</accessURL>
+    </interface>
+    <interface xsi:type="vod:ParamHTTP" role="std">
+      <accessURL use="base">http://replace.me.com/vospace/nodes</accessURL>
+      <securityMethod standardID="vos://cadc.nrc.ca~vospace/CADC/std/Auth#token-1.0"/> 
+    </interface>
+    <interface xsi:type="vod:ParamHTTP" role="std">
+      <accessURL use="base">http://replace.me.com/vospace/nodes</accessURL>
+      <securityMethod standardID="ivo://ivoa.net/sso#cookie"/>
+    </interface>
+    <interface xsi:type="vod:ParamHTTP" role="std">
+      <accessURL use="base">http://replace.me.com/vospace/auth/nodes</accessURL>
+      <securityMethod standardID="http://www.w3.org/Protocols/HTTP/1.0/spec.html#BasicAA" />
+    </interface>
+    <interface xsi:type="vod:ParamHTTP" role="std">
+      <accessURL use="base">https://replace.me.com/vospace/nodes</accessURL>
+      <securityMethod standardID="ivo://ivoa.net/sso#tls-with-certificate" />
+    </interface>
+  </capability>
+
+  <capability standardID="ivo://ivoa.net/std/VOSpace/v2.0#transfers">
+    <interface xsi:type="vod:ParamHTTP" role="std">
+      <accessURL use="full">http://replace.me.com/vospace/transfers</accessURL>
+    </interface>
+    <interface xsi:type="vod:ParamHTTP" role="std">
+      <accessURL use="full">http://replace.me.com/vospace/transfers</accessURL>
+      <securityMethod standardID="vos://cadc.nrc.ca~vospace/CADC/std/Auth#token-1.0"/> 
+    </interface>
+    <interface xsi:type="vod:ParamHTTP" role="std">
+      <accessURL use="full">http://replace.me.com/vospace/transfers</accessURL>
+      <securityMethod standardID="ivo://ivoa.net/sso#cookie"/>
+    </interface>
+    <interface xsi:type="vod:ParamHTTP" role="std">
+      <accessURL use="full">http://replace.me.com/vospace/auth/transfers</accessURL>
+      <securityMethod standardID="http://www.w3.org/Protocols/HTTP/1.0/spec.html#BasicAA" />
+    </interface>
+    <interface xsi:type="vod:ParamHTTP" role="std">
+      <accessURL use="full">https://replace.me.com/vospace/transfers</accessURL>
+      <securityMethod standardID="ivo://ivoa.net/sso#tls-with-certificate" />
+    </interface>
+  </capability>
+
+  <capability standardID="ivo://ivoa.net/std/VOSpace/v2.0#sync">
+    <interface xsi:type="vod:ParamHTTP" role="std">
+      <accessURL use="full">http://replace.me.com/vospace/synctrans</accessURL>
+    </interface>
+    <interface xsi:type="vod:ParamHTTP" role="std">
+      <accessURL use="full">http://replace.me.com/vospace/synctrans</accessURL>
+      <securityMethod standardID="vos://cadc.nrc.ca~vospace/CADC/std/Auth#token-1.0"/> 
+    </interface>
+    <interface xsi:type="vod:ParamHTTP" role="std">
+      <accessURL use="full">http://replace.me.com/vospace/synctrans</accessURL>
+      <securityMethod standardID="ivo://ivoa.net/sso#cookie"/>
+    </interface>
+    <interface xsi:type="vod:ParamHTTP" role="std">
+      <accessURL use="full">http://replace.me.com/vospace/auth/synctrans</accessURL>
+      <securityMethod standardID="http://www.w3.org/Protocols/HTTP/1.0/spec.html#BasicAA" />
+    </interface>
+    <interface xsi:type="vod:ParamHTTP" role="std">
+      <accessURL use="full">https://replace.me.com/vospace/synctrans</accessURL>
+      <securityMethod standardID="ivo://ivoa.net/sso#tls-with-certificate" />
+    </interface>
+  </capability>
+                          
+  <capability standardID="ivo://ivoa.net/std/VOSpace#sync-2.1">
+    <interface xsi:type="vod:ParamHTTP" role="std">
+      <accessURL use="full">http://replace.me.com/vospace/synctrans</accessURL>
+    </interface>
+    <interface xsi:type="vod:ParamHTTP" role="std">
+      <accessURL use="full">http://replace.me.com/vospace/synctrans</accessURL>
+      <securityMethod standardID="vos://cadc.nrc.ca~vospace/CADC/std/Auth#token-1.0"/> 
+    </interface>
+    <interface xsi:type="vod:ParamHTTP" role="std">
+      <accessURL use="full">http://replace.me.com/vospace/synctrans</accessURL>
+      <securityMethod standardID="ivo://ivoa.net/sso#cookie"/>
+    </interface>
+    <interface xsi:type="vod:ParamHTTP" role="std">
+      <accessURL use="full">http://replace.me.com/vospace/auth/synctrans</accessURL>
+      <securityMethod standardID="http://www.w3.org/Protocols/HTTP/1.0/spec.html#BasicAA" />
+    </interface>
+    <interface xsi:type="vod:ParamHTTP" role="std">
+      <accessURL use="full">https://replace.me.com/vospace/synctrans</accessURL>
+      <securityMethod standardID="ivo://ivoa.net/sso#tls-with-certificate" />
+    </interface>
+  </capability>
+
+  <capability standardID="vos://cadc.nrc.ca~vospace/CADC/std/UWS#update-1.0">
+    <interface xsi:type="vod:ParamHTTP" role="std">
+      <accessURL use="full">http://replace.me.com/vospace/jobUpdater</accessURL>
+    </interface>
+    <interface xsi:type="vod:ParamHTTP" role="std">
+      <accessURL use="full">http://replace.me.com/vospace/jobUpdater</accessURL>
+      <securityMethod standardID="ivo://ivoa.net/sso#cookie"/>
+    </interface>
+    <interface xsi:type="vod:ParamHTTP" role="std">
+      <accessURL use="full">http://replace.me.com/vospace/auth/jobUpdater</accessURL>
+      <securityMethod standardID="http://www.w3.org/Protocols/HTTP/1.0/spec.html#BasicAA" />
+    </interface>
+    <interface xsi:type="vod:ParamHTTP" role="std">
+      <accessURL use="full">https://replace.me.com/vospace/jobUpdater</accessURL>
+      <securityMethod standardID="ivo://ivoa.net/sso#tls-with-certificate" />
+    </interface>
+  </capability>
+
+  <capability standardID="vos://cadc.nrc.ca~vospace/CADC/std/VOSpace#xfer">
+    <interface xsi:type="vod:ParamHTTP" role="std">
+      <accessURL use="full">http://replace.me.com/vospace/xfer</accessURL>
+    </interface>
+    <interface xsi:type="vod:ParamHTTP" role="std">
+      <accessURL use="full">http://replace.me.com/vospace/xfer</accessURL>
+      <securityMethod standardID="ivo://ivoa.net/sso#cookie"/>
+    </interface>
+    <interface xsi:type="vod:ParamHTTP">
+      <accessURL use="full">http://replace.me.com/vospace/auth/xfer</accessURL>
+      <securityMethod standardID="http://www.w3.org/Protocols/HTTP/1.0/spec.html#BasicAA"/>
+    </interface>
+    <interface xsi:type="vod:ParamHTTP">
+      <accessURL use="full">https://replace.me.com/vospace/xfer</accessURL>
+      <securityMethod standardID="ivo://ivoa.net/sso#tls-with-certificate"/>
+    </interface>
+  </capability>
+
+  <capability standardID="vos://cadc.nrc.ca~vospace/CADC/std/VOSpace#nodeprops">
+    <interface xsi:type="vod:ParamHTTP" role="std">
+      <accessURL use="full">http://replace.me.com/vospace/nodeprops</accessURL>
+    </interface>
+    <interface xsi:type="vod:ParamHTTP" role="std">
+      <accessURL use="full">http://replace.me.com/vospace/nodeprops</accessURL>
+      <securityMethod standardID="ivo://ivoa.net/sso#cookie"/>
+    </interface>
+    <interface xsi:type="vod:ParamHTTP" role="std">
+      <accessURL use="full">http://replace.me.com/vospace/auth/nodeprops</accessURL>
+      <securityMethod standardID="http://www.w3.org/Protocols/HTTP/1.0/spec.html#BasicAA" />
+    </interface>
+    <interface xsi:type="vod:ParamHTTP" role="std">
+      <accessURL use="full">https://replace.me.com/vospace/nodeprops</accessURL>
+      <securityMethod standardID="ivo://ivoa.net/sso#tls-with-certificate" />
+    </interface>
+  </capability>
+
+</vosi:capabilities>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**_____________________________________________________________________________
+ *
+ *                                 OATS - INAF
+ *  Osservatorio Astronomico di Tireste - Istituto Nazionale di Astrofisica
+ *  Astronomical Observatory of Trieste - National Institute for Astrophysics
+ * ____________________________________________________________________________
+ *
+ * Copyright (C) 20016  Istituto Nazionale di Astrofisica
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software Foundation, Inc., 
+ * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * _____________________________________________________________________________
+ **/
+-->
+
+   <Context path="/vospaceBackend" docBase="vospace"
+              crossContext="true" reloadable="true" debug="1">
+   
+        <Resource name="jdbc/YOUR_DB_NAME"
+                 auth="Container"
+                 type="javax.sql.DataSource"
+                 username="YOUR_DB_USER" password="YOUR_DB_USER_PASSWORD"
+                 driverClassName="com.mysql.jdbc.Driver"
+                 url="jdbc:mysql://YOUR_DB_HOST/YOUR_DB_USER_PASSWORD"
+                 maxActive="10"
+                 maxWait="-1"
+                 maxIdle="4" />
+           
+   </Context>
