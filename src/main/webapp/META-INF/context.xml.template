@@ -34,7 +34,7 @@
                  type="javax.sql.DataSource"
                  username="YOUR_DB_USER" password="YOUR_DB_USER_PASSWORD"
                  driverClassName="com.mysql.jdbc.Driver"
-                 url="jdbc:mysql://YOUR_DB_HOST/YOUR_DB_USER_PASSWORD"
+                 url="jdbc:mysql://YOUR_DB_HOST/YOUR_DB_NAME"
                  maxActive="10"
                  maxWait="-1"
                  maxIdle="4" />
