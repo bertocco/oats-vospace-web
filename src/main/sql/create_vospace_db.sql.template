@@ -35,6 +35,8 @@ the UWS tables to manage Job metadata
 
 CREATE DATABASE YOUR_DB_NAME;
 
+CREATE USER 'YOUR_DB_USER'@'localhost' identified by 'YOUR_DB_PASSWORD';
+
 use YOUR_DB_NAME;
 
 grant all on YOUR_DB_NAME.* to 'YOUR_DB_USER' identified by 'YOUR_DB_PASSWORD';
