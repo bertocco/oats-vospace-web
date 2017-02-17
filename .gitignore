@@ -1,3 +1,6 @@
+.gradle  
+.nb-gradle  
+settings.gradle
 build  
 build.gradle  
 settings.gradle
